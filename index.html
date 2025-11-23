@@ -457,70 +457,61 @@
         </div>
     </div>
 
-    <script>
-        // TAMBAH INI - URL Google Apps Script Anda
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdVnwY5X4qVl4_X38rj0aS2l5lChVS6uAqgX6fpQytPyhvYIW-iyf4imb8U5Q29-Pqjw/exec';
+<script>
+    // TAMBAH INI - URL Google Apps Script Anda
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdVnwY5X4qVl4_X38rj0aS2l5lChVS6uAqgX6fpQytPyhvYIW-iyf4imb8U5Q29-Pqjw/exec';
+    
+    // Variabel global
+    let currentUser = null;
+    
+    // Fungsi untuk menampilkan/menyembunyikan loading
+    function showLoading(show) {
+        document.getElementById('loading').style.display = show ? 'block' : 'none';
+    }
+    
+    // Fungsi untuk memanggil Google Apps Script - UPDATED
+    function callGoogleScript(functionName, data = {}) {
+        showLoading(true);
         
-        // Variabel global
-        let currentUser = null;
+        // Tambah function name ke data
+        const formData = new URLSearchParams();
+        formData.append('function', functionName);
         
-        // Fungsi untuk menampilkan/menyembunyikan loading
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-        }
-        
-        // Fungsi untuk memanggil Google Apps Script
-        function callGoogleScript(functionName, data = {}) {
-            showLoading(true);
-            
-            return new Promise((resolve, reject) => {
-                // Buat form data
-                const formData = new FormData();
-                formData.append('function', functionName);
-                
-                // Tambah data ke form
-                Object.keys(data).forEach(key => {
-                    formData.append(key, data[key]);
-                });
-                
-                // Panggil Google Apps Script
-                fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(result => {
-                    showLoading(false);
-                    resolve(result);
-                })
-                .catch(error => {
-                    showLoading(false);
-                    reject(error);
-                });
-            });
-        }
-        
-        // Fungsi untuk menampilkan halaman tertentu
-        function showPage(pageId) {
-            document.querySelectorAll('[id$="Page"]').forEach(page => {
-                page.style.display = 'none';
-            });
-            document.getElementById(pageId).style.display = 'block';
-        }
-        
-        // Navigasi tab
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                if (this.id === 'logoutBtn') return;
-                
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                this.classList.add('active');
-                document.getElementById(this.dataset.tab).classList.add('active');
-            });
+        // Tambah data lainnya
+        Object.keys(data).forEach(key => {
+            formData.append(key, data[key]);
         });
         
+        return fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(result => {
+            showLoading(false);
+            return result;
+        })
+        .catch(error => {
+            showLoading(false);
+            console.error('Error:', error);
+            return {
+                success: false,
+                message: 'Connection error: ' + error.message
+            };
+        });
+    }
+    
+    // ... (rest of your existing JavaScript code tetap sama)
+</script>
+    
         // Event Listeners untuk navigasi halaman
         document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
             e.preventDefault();
