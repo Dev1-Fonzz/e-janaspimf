@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem E-Jana SPIMF</title>
+    <style>
+        /* Tema Blackberry */
+        :root {
+            --bb-dark: #000000;
+            --bb-primary: #6f42c1;
+            --bb-secondary: #343a40;
+            --bb-accent: #8a2be2;
+            --bb-light: #f8f9fa;
+            --bb-gray: #6c757d;
+        }
+        
+        body {
+            background-color: var(--bb-dark);
+            color: var(--bb-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--bb-primary), var(--bb-accent));
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--bb-accent);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background-color: var(--bb-secondary);
+            border-bottom: 1px solid var(--bb-primary);
+        }
+        
+        .nav-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--bb-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab:hover {
+            background-color: var(--bb-primary);
+        }
+        
+        .nav-tab.active {
+            background-color: var(--bb-primary);
+            border-bottom: 3px solid var(--bb-accent);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--bb-secondary);
+            border-radius: 0 0 8px 8px;
+            min-height: 500px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--bb-gray);
+            border-radius: 4px;
+            background-color: var(--bb-dark);
+            color: var(--bb-light);
+            box-sizing: border-box;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--bb-primary);
+            box-shadow: 0 0 5px var(--bb-primary);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--bb-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--bb-accent);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bb-gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--bb-gray);
+        }
+        
+        .table th {
+            background-color: var(--bb-primary);
+            color: white;
+        }
+        
+        .table tr:hover {
+            background-color: rgba(111, 66, 193, 0.1);
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .card {
+            background-color: var(--bb-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--bb-primary);
+        }
+        
+        .message-item {
+            background-color: rgba(111, 66, 193, 0.1);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--bb-primary);
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--bb-gray);
+            margin-top: 5px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .copy-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .generate-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: var(--bb-secondary);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(111, 66, 193, 0.3);
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--bb-primary);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--bb-gray);
+            color: var(--bb-gray);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Halaman Login -->
+    <div id="loginPage" class="container">
+        <div class="login-container">
+            <h2 class="login-title">Sistem E-Jana SPIMF</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username/Phone Number</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="#" id="forgotPasswordLink" style="color: var(--bb-primary);">Lupa Password?</a> | 
+                <a href="#" id="signUpLink" style="color: var(--bb-primary);">Daftar Akaun Baru</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Lupa Password -->
+    <div id="forgotPasswordPage" class="container" style="display: none;">
+        <div class="login-container">
+            <h2 class="login-title">Lupa Password</h2>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="forgotUsername">Username/Phone Number</label>
+                    <input type="text" id="forgotUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="securityAnswer">Jawaban Security Question</label>
+                    <input type="text" id="securityAnswer" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sahkan</button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="#" id="backToLoginFromForgot" style="color: var(--bb-primary);">Kembali ke Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Sign Up -->
+    <div id="signUpPage" class="container" style="display: none;">
+        <div class="login-container">
+            <h2 class="login-title">Daftar Akaun Baru</h2>
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="signUpUsername">Username</label>
+                    <input type="text" id="signUpUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpPhone">Phone Number</label>
+                    <input type="text" id="signUpPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="securityQuestion">Security Question</label>
+                    <input type="text" id="securityQuestion" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpSecurityAnswer">Security Answer</label>
+                    <input type="text" id="signUpSecurityAnswer" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpDob">Date of Birth</label>
+                    <input type="date" id="signUpDob" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="signUpPengesahan">
+                        Saya setuju menerima pemberitahuan dari admin
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Daftar</button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="#" id="backToLoginFromSignUp" style="color: var(--bb-primary);">Kembali ke Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Utama Setelah Login -->
+    <div id="mainPage" style="display: none;">
+        <div class="header">
+            <div class="logo">E-JANA SPIMF</div>
+            <div>Selamat Datang, <span id="welcomeUser"></span></div>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="notifications">Pemberitahuan Admin</button>
+            <button class="nav-tab" data-tab="accountStatus">Status Akaun</button>
+            <button class="nav-tab" data-tab="generateKode">E-Jana Kode User</button>
+            <button class="nav-tab" data-tab="generateIdCard">E-Jana ID Card</button>
+            <button class="nav-tab" id="logoutBtn" style="margin-left: auto;">Logout</button>
+        </div>
+        
+        <div class="container">
+            <!-- Tab Pemberitahuan Admin -->
+            <div id="notifications" class="tab-content active">
+                <h2>Pemberitahuan Dari Admin SPIMF</h2>
+                <div id="messagesList">
+                    <!-- Daftar pesan akan dimuat di sini -->
+                </div>
+            </div>
+            
+            <!-- Tab Status Akaun -->
+            <div id="accountStatus" class="tab-content">
+                <h2>Status Akaun Pengguna</h2>
+                <div class="card">
+                    <h3>Maklumat Akaun</h3>
+                    <p><strong>Username:</strong> <span id="accountUsername"></span></p>
+                    <p><strong>Phone:</strong> <span id="accountPhone"></span></p>
+                    <p><strong>Status:</strong> <span id="accountStatusText">Aktif</span></p>
+                </div>
+            </div>
+            
+            <!-- Tab Generate Kode User -->
+            <div id="generateKode" class="tab-content">
+                <h2>E-Jana Kode User SPIMF</h2>
+                <div class="card">
+                    <h3>Jana Kode User Baru</h3>
+                    <div class="form-group">
+                        <label for="kodeAmount">Jumlah Kode yang Dijana</label>
+                        <input type="number" id="kodeAmount" min="1" max="100" value="5">
+                    </div>
+                    <button id="generateKodeBtn" class="btn btn-primary">Jana Kode</button>
+                </div>
+                
+                <div class="card">
+                    <h3>Senarai Kode User</h3>
+                    <button id="copyAllKodeBtn" class="btn btn-secondary" style="margin-bottom: 10px;">🆙 Copy All</button>
+                    <table class="table" id="kodeUserTable">
+                        <thead>
+                            <tr>
+                                <th>BIL</th>
+                                <th>KODE USER</th>
+                                <th>STATUS</th>
+                                <th>TINDAKAN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kodeUserList">
+                            <!-- Data kode user akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Tab Generate ID Card -->
+            <div id="generateIdCard" class="tab-content">
+                <h2>E-Jana ID Card Registration</h2>
+                <div class="card">
+                    <h3>Jana ID Card Baru</h3>
+                    <div class="form-group">
+                        <label for="idCardAmount">Jumlah ID Card yang Dijana</label>
+                        <input type="number" id="idCardAmount" min="1" max="100" value="5">
+                    </div>
+                    <button id="generateIdCardBtn" class="btn btn-primary">Jana ID Card</button>
+                </div>
+                
+                <div class="card">
+                    <h3>Senarai ID Card</h3>
+                    <button id="copyAllIdCardBtn" class="btn btn-secondary" style="margin-bottom: 10px;">🆙 Copy All</button>
+                    <table class="table" id="idCardTable">
+                        <thead>
+                            <tr>
+                                <th>BIL</th>
+                                <th>ID CARD REGISTRATION</th>
+                                <th>STATUS</th>
+                                <th>TINDAKAN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="idCardList">
+                            <!-- Data ID Card akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2023 Sistem E-Jana SPIMF. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        // Variabel global
+        let currentUser = null;
+        
+        // Fungsi untuk menampilkan halaman tertentu
+        function showPage(pageId) {
+            document.querySelectorAll('[id$="Page"]').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById(pageId).style.display = 'block';
+        }
+        
+        // Navigasi tab
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                if (this.id === 'logoutBtn') return;
+                
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Event Listeners untuk navigasi halaman
+        document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('forgotPasswordPage');
+        });
+        
+        document.getElementById('signUpLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('signUpPage');
+        });
+        
+        document.getElementById('backToLoginFromForgot').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('loginPage');
+        });
+        
+        document.getElementById('backToLoginFromSignUp').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPage('loginPage');
+        });
+        
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            currentUser = null;
+            showPage('loginPage');
+            document.getElementById('loginForm').reset();
+        });
+        
+        // Login Form
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    currentUser = result;
+                    document.getElementById('welcomeUser').textContent = result.username;
+                    document.getElementById('accountUsername').textContent = result.username;
+                    document.getElementById('accountPhone').textContent = result.phone;
+                    showPage('mainPage');
+                    loadAdminMessages();
+                    loadKodeUser();
+                    loadIdCard();
+                } else {
+                    alert('Login gagal: ' + result.message);
+                }
+            }).withFailureHandler(function(error) {
+                alert('Error: ' + error.message);
+            }).login(username, password);
+        });
+        
+        // Forgot Password Form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('forgotUsername').value;
+            const securityAnswer = document.getElementById('securityAnswer').value;
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    alert('Jawaban security question betul. Anda akan diarahkan ke halaman pendaftaran.');
+                    showPage('signUpPage');
+                } else {
+                    alert('Gagal: ' + result.message);
+                }
+            }).withFailureHandler(function(error) {
+                alert('Error: ' + error.message);
+            }).forgotPassword(username, securityAnswer);
+        });
+        
+        // Sign Up Form
+        document.getElementById('signUpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userData = {
+                username: document.getElementById('signUpUsername').value,
+                password: document.getElementById('signUpPassword').value,
+                phone: document.getElementById('signUpPhone').value,
+                securityQuestion: document.getElementById('securityQuestion').value,
+                securityAnswer: document.getElementById('signUpSecurityAnswer').value,
+                dob: document.getElementById('signUpDob').value,
+                pengesahan: document.getElementById('signUpPengesahan').checked
+            };
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    alert('Pendaftaran berhasil! Silakan login.');
+                    showPage('loginPage');
+                    document.getElementById('signUpForm').reset();
+                } else {
+                    alert('Pendaftaran gagal: ' + result.message);
+                }
+            }).withFailureHandler(function(error) {
+                alert('Error: ' + error.message);
+            }).signUp(userData);
+        });
+        
+        // Generate Kode User
+        document.getElementById('generateKodeBtn').addEventListener('click', function() {
+            const amount = document.getElementById('kodeAmount').value;
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    alert('Kode user berhasil dijana!');
+                    loadKodeUser();
+                } else {
+                    alert('Gagal menjana kode: ' + result.message);
+                }
+            }).withFailureHandler(function(error) {
+                alert('Error: ' + error.message);
+            }).generateKodeUser(amount);
+        });
+        
+        // Generate ID Card
+        document.getElementById('generateIdCardBtn').addEventListener('click', function() {
+            const amount = document.getElementById('idCardAmount').value;
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    alert('ID Card berhasil dijana!');
+                    loadIdCard();
+                } else {
+                    alert('Gagal menjana ID Card: ' + result.message);
+                }
+            }).withFailureHandler(function(error) {
+                alert('Error: ' + error.message);
+            }).generateIdCard(amount);
+        });
+        
+        // Copy All Kode User
+        document.getElementById('copyAllKodeBtn').addEventListener('click', function() {
+            const kodeElements = document.querySelectorAll('.kode-user');
+            let allKodes = '';
+            
+            kodeElements.forEach(el => {
+                allKodes += el.textContent + '\n';
+            });
+            
+            navigator.clipboard.writeText(allKodes).then(function() {
+                alert('Semua kode user telah disalin!');
+            });
+        });
+        
+        // Copy All ID Card
+        document.getElementById('copyAllIdCardBtn').addEventListener('click', function() {
+            const idCardElements = document.querySelectorAll('.id-card');
+            let allIdCards = '';
+            
+            idCardElements.forEach(el => {
+                allIdCards += el.textContent + '\n';
+            });
+            
+            navigator.clipboard.writeText(allIdCards).then(function() {
+                alert('Semua ID Card telah disalin!');
+            });
+        });
+        
+        // Fungsi untuk memuat pesan admin
+        function loadAdminMessages() {
+            if (!currentUser) return;
+            
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    const messagesList = document.getElementById('messagesList');
+                    messagesList.innerHTML = '';
+                    
+                    if (result.messages.length > 0) {
+                        result.messages.forEach(msg => {
+                            const messageItem = document.createElement('div');
+                            messageItem.className = 'message-item';
+                            messageItem.innerHTML = `
+                                <div>${msg.message}</div>
+                                <div class="message-time">${new Date(msg.timestamp).toLocaleString()}</div>
+                            `;
+                            messagesList.appendChild(messageItem);
+                        });
+                    } else {
+                        messagesList.innerHTML = '<p>Tiada pemberitahuan dari admin.</p>';
+                    }
+                }
+            }).withFailureHandler(function(error) {
+                console.error('Error loading messages:', error);
+            }).getAdminMessages(currentUser.username);
+        }
+        
+        // Fungsi untuk memuat kode user
+        function loadKodeUser() {
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    const kodeUserList = document.getElementById('kodeUserList');
+                    kodeUserList.innerHTML = '';
+                    
+                    result.data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.bil}</td>
+                            <td class="kode-user">${item.kode}</td>
+                            <td>${item.status}</td>
+                            <td>
+                                <button class="action-btn copy-btn" data-kode="${item.kode}">🆒 Copy</button>
+                                <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
+                                <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
+                            </td>
+                        `;
+                        kodeUserList.appendChild(row);
+                    });
+                    
+                    // Tambah event listeners untuk tombol aksi
+                    document.querySelectorAll('.copy-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const kode = this.dataset.kode;
+                            navigator.clipboard.writeText(kode).then(function() {
+                                alert('Kode disalin: ' + kode);
+                            });
+                        });
+                    });
+                }
+            }).withFailureHandler(function(error) {
+                console.error('Error loading kode user:', error);
+            }).getKodeUser();
+        }
+        
+        // Fungsi untuk memuat ID Card
+        function loadIdCard() {
+            google.script.run.withSuccessHandler(function(result) {
+                if (result.success) {
+                    const idCardList = document.getElementById('idCardList');
+                    idCardList.innerHTML = '';
+                    
+                    result.data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${item.bil}</td>
+                            <td class="id-card">${item.idCard}</td>
+                            <td>${item.status}</td>
+                            <td>
+                                <button class="action-btn copy-btn" data-idcard="${item.idCard}">🆒 Copy</button>
+                                <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
+                                <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
+                            </td>
+                        `;
+                        idCardList.appendChild(row);
+                    });
+                    
+                    // Tambah event listeners untuk tombol aksi
+                    document.querySelectorAll('.copy-btn').forEach(btn => {
+                        if (btn.dataset.idcard) {
+                            btn.addEventListener('click', function() {
+                                const idCard = this.dataset.idcard;
+                                navigator.clipboard.writeText(idCard).then(function() {
+                                    alert('ID Card disalin: ' + idCard);
+                                });
+                            });
+                        }
+                    });
+                }
+            }).withFailureHandler(function(error) {
+                console.error('Error loading ID Card:', error);
+            }).getIdCard();
+        }
+        
+        // Tampilkan halaman login pertama kali
+        showPage('loginPage');
+    </script>
+</body>
+</html>
