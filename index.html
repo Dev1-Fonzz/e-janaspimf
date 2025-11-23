@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem E-Jana SPIMF</title>
+    
+    <!-- TAMBAH INI - Google Apps Script API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    
     <style>
         /* Tema Blackberry */
         :root {
@@ -241,6 +245,12 @@
             color: var(--bb-gray);
         }
         
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
         @media (max-width: 768px) {
             .nav-tabs {
                 flex-direction: column;
@@ -253,6 +263,11 @@
     </style>
 </head>
 <body>
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+        <div>Memproses...</div>
+    </div>
+
     <!-- Halaman Login -->
     <div id="loginPage" class="container">
         <div class="login-container">
@@ -443,8 +458,47 @@
     </div>
 
     <script>
+        // TAMBAH INI - URL Google Apps Script Anda
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwdVnwY5X4qVl4_X38rj0aS2l5lChVS6uAqgX6fpQytPyhvYIW-iyf4imb8U5Q29-Pqjw/exec';
+        
         // Variabel global
         let currentUser = null;
+        
+        // Fungsi untuk menampilkan/menyembunyikan loading
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+        
+        // Fungsi untuk memanggil Google Apps Script
+        function callGoogleScript(functionName, data = {}) {
+            showLoading(true);
+            
+            return new Promise((resolve, reject) => {
+                // Buat form data
+                const formData = new FormData();
+                formData.append('function', functionName);
+                
+                // Tambah data ke form
+                Object.keys(data).forEach(key => {
+                    formData.append(key, data[key]);
+                });
+                
+                // Panggil Google Apps Script
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    showLoading(false);
+                    resolve(result);
+                })
+                .catch(error => {
+                    showLoading(false);
+                    reject(error);
+                });
+            });
+        }
         
         // Fungsi untuk menampilkan halaman tertentu
         function showPage(pageId) {
@@ -501,22 +555,24 @@
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    currentUser = result;
-                    document.getElementById('welcomeUser').textContent = result.username;
-                    document.getElementById('accountUsername').textContent = result.username;
-                    document.getElementById('accountPhone').textContent = result.phone;
-                    showPage('mainPage');
-                    loadAdminMessages();
-                    loadKodeUser();
-                    loadIdCard();
-                } else {
-                    alert('Login gagal: ' + result.message);
-                }
-            }).withFailureHandler(function(error) {
-                alert('Error: ' + error.message);
-            }).login(username, password);
+            callGoogleScript('login', { username, password })
+                .then(result => {
+                    if (result.success) {
+                        currentUser = result;
+                        document.getElementById('welcomeUser').textContent = result.username;
+                        document.getElementById('accountUsername').textContent = result.username;
+                        document.getElementById('accountPhone').textContent = result.phone;
+                        showPage('mainPage');
+                        loadAdminMessages();
+                        loadKodeUser();
+                        loadIdCard();
+                    } else {
+                        alert('Login gagal: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
         });
         
         // Forgot Password Form
@@ -526,16 +582,18 @@
             const username = document.getElementById('forgotUsername').value;
             const securityAnswer = document.getElementById('securityAnswer').value;
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    alert('Jawaban security question betul. Anda akan diarahkan ke halaman pendaftaran.');
-                    showPage('signUpPage');
-                } else {
-                    alert('Gagal: ' + result.message);
-                }
-            }).withFailureHandler(function(error) {
-                alert('Error: ' + error.message);
-            }).forgotPassword(username, securityAnswer);
+            callGoogleScript('forgotPassword', { username, securityAnswer })
+                .then(result => {
+                    if (result.success) {
+                        alert('Jawaban security question betul. Anda akan diarahkan ke halaman pendaftaran.');
+                        showPage('signUpPage');
+                    } else {
+                        alert('Gagal: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
         });
         
         // Sign Up Form
@@ -552,49 +610,55 @@
                 pengesahan: document.getElementById('signUpPengesahan').checked
             };
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    alert('Pendaftaran berhasil! Silakan login.');
-                    showPage('loginPage');
-                    document.getElementById('signUpForm').reset();
-                } else {
-                    alert('Pendaftaran gagal: ' + result.message);
-                }
-            }).withFailureHandler(function(error) {
-                alert('Error: ' + error.message);
-            }).signUp(userData);
+            callGoogleScript('signUp', userData)
+                .then(result => {
+                    if (result.success) {
+                        alert('Pendaftaran berhasil! Silakan login.');
+                        showPage('loginPage');
+                        document.getElementById('signUpForm').reset();
+                    } else {
+                        alert('Pendaftaran gagal: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
         });
         
         // Generate Kode User
         document.getElementById('generateKodeBtn').addEventListener('click', function() {
             const amount = document.getElementById('kodeAmount').value;
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    alert('Kode user berhasil dijana!');
-                    loadKodeUser();
-                } else {
-                    alert('Gagal menjana kode: ' + result.message);
-                }
-            }).withFailureHandler(function(error) {
-                alert('Error: ' + error.message);
-            }).generateKodeUser(amount);
+            callGoogleScript('generateKodeUser', { jumlah: amount })
+                .then(result => {
+                    if (result.success) {
+                        alert('Kode user berhasil dijana!');
+                        loadKodeUser();
+                    } else {
+                        alert('Gagal menjana kode: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
         });
         
         // Generate ID Card
         document.getElementById('generateIdCardBtn').addEventListener('click', function() {
             const amount = document.getElementById('idCardAmount').value;
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    alert('ID Card berhasil dijana!');
-                    loadIdCard();
-                } else {
-                    alert('Gagal menjana ID Card: ' + result.message);
-                }
-            }).withFailureHandler(function(error) {
-                alert('Error: ' + error.message);
-            }).generateIdCard(amount);
+            callGoogleScript('generateIdCard', { jumlah: amount })
+                .then(result => {
+                    if (result.success) {
+                        alert('ID Card berhasil dijana!');
+                        loadIdCard();
+                    } else {
+                        alert('Gagal menjana ID Card: ' + result.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
         });
         
         // Copy All Kode User
@@ -629,104 +693,110 @@
         function loadAdminMessages() {
             if (!currentUser) return;
             
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    const messagesList = document.getElementById('messagesList');
-                    messagesList.innerHTML = '';
-                    
-                    if (result.messages.length > 0) {
-                        result.messages.forEach(msg => {
-                            const messageItem = document.createElement('div');
-                            messageItem.className = 'message-item';
-                            messageItem.innerHTML = `
-                                <div>${msg.message}</div>
-                                <div class="message-time">${new Date(msg.timestamp).toLocaleString()}</div>
-                            `;
-                            messagesList.appendChild(messageItem);
-                        });
-                    } else {
-                        messagesList.innerHTML = '<p>Tiada pemberitahuan dari admin.</p>';
+            callGoogleScript('getAdminMessages', { username: currentUser.username })
+                .then(result => {
+                    if (result.success) {
+                        const messagesList = document.getElementById('messagesList');
+                        messagesList.innerHTML = '';
+                        
+                        if (result.messages.length > 0) {
+                            result.messages.forEach(msg => {
+                                const messageItem = document.createElement('div');
+                                messageItem.className = 'message-item';
+                                messageItem.innerHTML = `
+                                    <div>${msg.message}</div>
+                                    <div class="message-time">${new Date(msg.timestamp).toLocaleString()}</div>
+                                `;
+                                messagesList.appendChild(messageItem);
+                            });
+                        } else {
+                            messagesList.innerHTML = '<p>Tiada pemberitahuan dari admin.</p>';
+                        }
                     }
-                }
-            }).withFailureHandler(function(error) {
-                console.error('Error loading messages:', error);
-            }).getAdminMessages(currentUser.username);
+                })
+                .catch(error => {
+                    console.error('Error loading messages:', error);
+                });
         }
         
         // Fungsi untuk memuat kode user
         function loadKodeUser() {
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    const kodeUserList = document.getElementById('kodeUserList');
-                    kodeUserList.innerHTML = '';
-                    
-                    result.data.forEach(item => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${item.bil}</td>
-                            <td class="kode-user">${item.kode}</td>
-                            <td>${item.status}</td>
-                            <td>
-                                <button class="action-btn copy-btn" data-kode="${item.kode}">🆒 Copy</button>
-                                <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
-                                <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
-                            </td>
-                        `;
-                        kodeUserList.appendChild(row);
-                    });
-                    
-                    // Tambah event listeners untuk tombol aksi
-                    document.querySelectorAll('.copy-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
-                            const kode = this.dataset.kode;
-                            navigator.clipboard.writeText(kode).then(function() {
-                                alert('Kode disalin: ' + kode);
+            callGoogleScript('getKodeUser')
+                .then(result => {
+                    if (result.success) {
+                        const kodeUserList = document.getElementById('kodeUserList');
+                        kodeUserList.innerHTML = '';
+                        
+                        result.data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${item.bil}</td>
+                                <td class="kode-user">${item.kode}</td>
+                                <td>${item.status}</td>
+                                <td>
+                                    <button class="action-btn copy-btn" data-kode="${item.kode}">🆒 Copy</button>
+                                    <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
+                                    <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
+                                </td>
+                            `;
+                            kodeUserList.appendChild(row);
+                        });
+                        
+                        // Tambah event listeners untuk tombol aksi
+                        document.querySelectorAll('.copy-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const kode = this.dataset.kode;
+                                navigator.clipboard.writeText(kode).then(function() {
+                                    alert('Kode disalin: ' + kode);
+                                });
                             });
                         });
-                    });
-                }
-            }).withFailureHandler(function(error) {
-                console.error('Error loading kode user:', error);
-            }).getKodeUser();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading kode user:', error);
+                });
         }
         
         // Fungsi untuk memuat ID Card
         function loadIdCard() {
-            google.script.run.withSuccessHandler(function(result) {
-                if (result.success) {
-                    const idCardList = document.getElementById('idCardList');
-                    idCardList.innerHTML = '';
-                    
-                    result.data.forEach(item => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${item.bil}</td>
-                            <td class="id-card">${item.idCard}</td>
-                            <td>${item.status}</td>
-                            <td>
-                                <button class="action-btn copy-btn" data-idcard="${item.idCard}">🆒 Copy</button>
-                                <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
-                                <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
-                            </td>
-                        `;
-                        idCardList.appendChild(row);
-                    });
-                    
-                    // Tambah event listeners untuk tombol aksi
-                    document.querySelectorAll('.copy-btn').forEach(btn => {
-                        if (btn.dataset.idcard) {
-                            btn.addEventListener('click', function() {
-                                const idCard = this.dataset.idcard;
-                                navigator.clipboard.writeText(idCard).then(function() {
-                                    alert('ID Card disalin: ' + idCard);
+            callGoogleScript('getIdCard')
+                .then(result => {
+                    if (result.success) {
+                        const idCardList = document.getElementById('idCardList');
+                        idCardList.innerHTML = '';
+                        
+                        result.data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${item.bil}</td>
+                                <td class="id-card">${item.idCard}</td>
+                                <td>${item.status}</td>
+                                <td>
+                                    <button class="action-btn copy-btn" data-idcard="${item.idCard}">🆒 Copy</button>
+                                    <button class="action-btn generate-btn" data-bil="${item.bil}">🔄 Jana Lagi</button>
+                                    <button class="action-btn delete-btn" data-bil="${item.bil}">❎ Padam</button>
+                                </td>
+                            `;
+                            idCardList.appendChild(row);
+                        });
+                        
+                        // Tambah event listeners untuk tombol aksi
+                        document.querySelectorAll('.copy-btn').forEach(btn => {
+                            if (btn.dataset.idcard) {
+                                btn.addEventListener('click', function() {
+                                    const idCard = this.dataset.idcard;
+                                    navigator.clipboard.writeText(idCard).then(function() {
+                                        alert('ID Card disalin: ' + idCard);
+                                    });
                                 });
-                            });
-                        }
-                    });
-                }
-            }).withFailureHandler(function(error) {
-                console.error('Error loading ID Card:', error);
-            }).getIdCard();
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading ID Card:', error);
+                });
         }
         
         // Tampilkan halaman login pertama kali
