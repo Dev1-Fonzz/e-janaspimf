@@ -1,20 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPIMF System</title>
     <style>
         :root {
-            --primary-color: #6c41a0;
-            --secondary-color: #8e6bbf;
-            --dark-color: #1a1a2e;
-            --darker-color: #0f0f1a;
-            --light-color: #e6e6fa;
-            --accent-color: #a78bfa;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
+            --black: #000000;
+            --dark-gray: #121212;
+            --yellow: #FFD700;
+            --light-yellow: #FFEC8B;
+            --white: #FFFFFF;
         }
         
         * {
@@ -25,11 +21,9 @@
         }
         
         body {
-            background: linear-gradient(135deg, var(--darker-color), var(--dark-color));
-            color: var(--light-color);
+            background-color: var(--black);
+            color: var(--white);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
         
         .container {
@@ -38,152 +32,105 @@
             padding: 20px;
         }
         
+        /* Header Styles */
         header {
-            background-color: rgba(26, 26, 46, 0.8);
+            background-color: var(--dark-gray);
             padding: 15px 0;
-            border-bottom: 2px solid var(--primary-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--yellow);
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
         }
         
-        .logo-icon {
-            font-size: 24px;
-            color: var(--accent-color);
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .logo h1 {
+            color: var(--yellow);
+            font-size: 28px;
+            margin-left: 10px;
         }
         
         nav ul {
             display: flex;
+            justify-content: center;
             list-style: none;
-            gap: 20px;
         }
         
-        nav a {
-            color: var(--light-color);
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: var(--white);
             text-decoration: none;
             padding: 8px 15px;
             border-radius: 5px;
             transition: all 0.3s;
         }
         
-        nav a:hover {
-            background-color: var(--primary-color);
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--yellow);
+            color: var(--black);
         }
         
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .page {
-            display: none;
-            padding: 30px 0;
-        }
-        
-        .active-page {
-            display: block;
-        }
-        
+        /* Login/Signup Form Styles */
         .form-container {
-            max-width: 500px;
-            margin: 40px auto;
-            background-color: rgba(26, 26, 46, 0.7);
+            background-color: var(--dark-gray);
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--primary-color);
+            margin: 50px auto;
+            max-width: 500px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
         }
         
-        .form-title {
+        .form-container h2 {
+            color: var(--yellow);
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 24px;
-            color: var(--accent-color);
+            margin-bottom: 20px;
         }
         
         .form-group {
             margin-bottom: 20px;
         }
         
-        .form-label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
+            color: var(--light-yellow);
         }
         
-        .form-input {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px;
+            border: 1px solid #444;
             border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
+            background-color: #222;
+            color: var(--white);
             font-size: 16px;
         }
         
-        .form-input:focus {
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(108, 65, 160, 0.3);
+            border-color: var(--yellow);
         }
         
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .btn {
+            background-color: var(--yellow);
+            color: var(--black);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s;
         }
         
-        .checkbox-group input {
-            width: auto;
+        .btn:hover {
+            background-color: var(--light-yellow);
         }
         
         .form-footer {
@@ -191,974 +138,839 @@
             margin-top: 20px;
         }
         
-        .link {
-            color: var(--accent-color);
+        .form-footer a {
+            color: var(--yellow);
             text-decoration: none;
         }
         
-        .link:hover {
-            text-decoration: underline;
-        }
-        
-        .alert {
-            padding: 12px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        /* Dashboard Styles */
+        .dashboard {
             display: none;
         }
         
-        .alert-success {
-            background-color: rgba(16, 185, 129, 0.2);
-            border: 1px solid var(--success-color);
-            color: var(--success-color);
-        }
-        
-        .alert-danger {
-            background-color: rgba(239, 68, 68, 0.2);
-            border: 1px solid var(--danger-color);
-            color: var(--danger-color);
-        }
-        
-        .dashboard {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 20px;
-        }
-        
-        .sidebar {
-            background-color: rgba(26, 26, 46, 0.7);
+        .dashboard-section {
+            background-color: var(--dark-gray);
             border-radius: 10px;
             padding: 20px;
-            height: fit-content;
-        }
-        
-        .sidebar-menu {
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            margin-bottom: 10px;
-        }
-        
-        .sidebar-menu a {
-            display: block;
-            padding: 12px 15px;
-            color: var(--light-color);
-            text-decoration: none;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-menu a:hover, .sidebar-menu a.active {
-            background-color: var(--primary-color);
-        }
-        
-        .content {
-            background-color: rgba(26, 26, 46, 0.7);
-            border-radius: 10px;
-            padding: 25px;
-        }
-        
-        .content-title {
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
         }
         
-        .card {
-            background-color: rgba(26, 26, 46, 0.5);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .card-title {
+        .dashboard-section h2 {
+            color: var(--yellow);
             margin-bottom: 15px;
-            color: var(--accent-color);
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
         }
         
-        .table {
+        /* Table Styles */
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
         
-        .table th, .table td {
+        table th, table td {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #444;
         }
         
-        .table th {
-            background-color: rgba(108, 65, 160, 0.2);
-            color: var(--accent-color);
+        table th {
+            background-color: #222;
+            color: var(--yellow);
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 5px;
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--yellow);
+            cursor: pointer;
+            font-size: 18px;
+            margin: 0 5px;
         }
         
-        .btn-sm {
-            padding: 6px 10px;
-            font-size: 14px;
+        .action-btn:hover {
+            color: var(--light-yellow);
         }
         
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-        
-        .btn-warning {
-            background-color: var(--warning-color);
-            color: white;
-        }
-        
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-        
+        /* Generator Styles */
         .generator-form {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 20px;
-            align-items: end;
+            flex-wrap: wrap;
         }
         
-        .form-control {
+        .generator-form input {
             flex: 1;
+            min-width: 200px;
         }
         
-        .codes-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        
-        .code-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background-color: rgba(255, 255, 255, 0.05);
+        /* Notification Styles */
+        .notification {
+            background-color: #1a1a1a;
+            border-left: 4px solid var(--yellow);
+            padding: 15px;
+            margin-bottom: 15px;
             border-radius: 5px;
-            margin-bottom: 10px;
         }
         
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+        .notification-time {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 5px;
         }
         
-        .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
+        /* Account Status */
         .status-active {
-            background-color: rgba(16, 185, 129, 0.2);
-            color: var(--success-color);
+            color: #4CAF50;
         }
         
         .status-inactive {
-            background-color: rgba(239, 68, 68, 0.2);
-            color: var(--danger-color);
+            color: #f44336;
         }
         
         .status-blocked {
-            background-color: rgba(245, 158, 11, 0.2);
-            color: var(--warning-color);
+            color: #ff9800;
         }
         
-        footer {
-            margin-top: auto;
-            padding: 20px 0;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+        /* Hidden Sections */
+        .hidden {
+            display: none;
         }
         
+        /* Responsive */
         @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
+            nav ul {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
+            nav ul li {
+                margin: 5px 0;
             }
             
             .generator-form {
                 flex-direction: column;
+            }
+            
+            .generator-form input {
+                min-width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container nav-container">
+        <div class="container">
             <div class="logo">
-                <div class="logo-icon">🔒</div>
-                <div class="logo-text">SPIMF System</div>
+                <h1>SPIMF System</h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
-                    <li><a href="#" class="nav-link" data-page="about">About</a></li>
-                    <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                    <li><a href="#" id="nav-login" class="active">Login</a></li>
+                    <li><a href="#" id="nav-signup">Daftar Akaun</a></li>
+                    <li><a href="#" id="nav-forgot">Lupa Kata Laluan</a></li>
                 </ul>
             </nav>
-            <div class="auth-buttons" id="authButtons">
-                <button class="btn btn-outline" id="loginBtn">Login</button>
-                <button class="btn btn-primary" id="signupBtn">Sign Up</button>
-            </div>
-            <div id="userMenu" style="display: none;">
-                <span id="usernameDisplay"></span>
-                <button class="btn btn-outline" id="logoutBtn">Logout</button>
-            </div>
         </div>
     </header>
 
     <div class="container">
-        <!-- Login Page -->
-        <div id="loginPage" class="page">
-            <div class="form-container">
-                <h2 class="form-title">Login to SPIMF System</h2>
-                <div id="loginAlert" class="alert"></div>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label" for="loginUsername">Username or Phone Number</label>
-                        <input type="text" class="form-input" id="loginUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="loginPassword">Password</label>
-                        <input type="password" class="form-input" id="loginPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-                    </div>
-                    <div class="form-footer">
-                        <a href="#" class="link" id="forgotPasswordLink">Forgot Password?</a>
-                    </div>
-                </form>
+        <!-- Login Form -->
+        <div id="login-form" class="form-container">
+            <h2>Log Masuk</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username/Nombor Telefon</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Kata Laluan</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn">Log Masuk</button>
+            </form>
+            <div class="form-footer">
+                <a href="#" id="showForgot">Lupa kata laluan?</a>
             </div>
         </div>
 
-        <!-- Sign Up Page -->
-        <div id="signupPage" class="page">
-            <div class="form-container">
-                <h2 class="form-title">Create SPIMF Account</h2>
-                <div id="signupAlert" class="alert"></div>
-                <form id="signupForm">
-                    <div class="form-group">
-                        <label class="form-label" for="signupUsername">Username</label>
-                        <input type="text" class="form-input" id="signupUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="signupPassword">Password</label>
-                        <input type="password" class="form-input" id="signupPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="signupPhone">Phone Number</label>
-                        <input type="tel" class="form-input" id="signupPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="securityQuestion">Security Question</label>
-                        <input type="text" class="form-input" id="securityQuestion" placeholder="Enter your security question" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="securityAnswer">Security Answer</label>
-                        <input type="text" class="form-input" id="securityAnswer" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="dob">Date of Birth</label>
-                        <input type="date" class="form-input" id="dob" required>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="pengesahan" checked>
-                        <label class="form-label" for="pengesahan">Accept notifications from admin</label>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
-                    </div>
-                </form>
+        <!-- Signup Form -->
+        <div id="signup-form" class="form-container hidden">
+            <h2>Daftar Akaun Baru</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Kata Laluan</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPhone">Nombor Telefon</label>
+                    <input type="text" id="signupPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupQuestion">Soalan Keselamatan</label>
+                    <input type="text" id="signupQuestion" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupAnswer">Jawapan Keselamatan</label>
+                    <input type="text" id="signupAnswer" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupDob">Tarikh Lahir</label>
+                    <input type="date" id="signupDob" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="signupNotification"> 
+                        Saya bersetuju menerima pemberitahuan dari admin SPIMF
+                    </label>
+                </div>
+                <button type="submit" class="btn">Daftar Akaun</button>
+            </form>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div id="forgot-form" class="form-container hidden">
+            <h2>Lupa Kata Laluan</h2>
+            <form id="forgotForm">
+                <div class="form-group">
+                    <label for="forgotUsername">Username/Nombor Telefon</label>
+                    <input type="text" id="forgotUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="forgotQuestion">Soalan Keselamatan</label>
+                    <input type="text" id="forgotQuestion" required>
+                </div>
+                <div class="form-group">
+                    <label for="forgotAnswer">Jawapan Keselamatan</label>
+                    <input type="text" id="forgotAnswer" required>
+                </div>
+                <button type="submit" class="btn">Sahkan</button>
+            </form>
+            <div class="form-footer">
+                <a href="#" id="backToLogin">Kembali ke log masuk</a>
             </div>
         </div>
 
-        <!-- Forgot Password Page -->
-        <div id="forgotPasswordPage" class="page">
-            <div class="form-container">
-                <h2 class="form-title">Recover Password</h2>
-                <div id="forgotAlert" class="alert"></div>
-                <form id="forgotPasswordForm">
-                    <div class="form-group">
-                        <label class="form-label" for="forgotUsername">Username</label>
-                        <input type="text" class="form-input" id="forgotUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="forgotSecurityAnswer">Security Answer</label>
-                        <input type="text" class="form-input" id="forgotSecurityAnswer" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Verify</button>
-                    </div>
-                    <div class="form-footer">
-                        <a href="#" class="link" id="backToLoginLink">Back to Login</a>
-                    </div>
-                </form>
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <!-- Admin Messages -->
+            <div class="dashboard-section">
+                <h2>Pemberitahuan Dari Admin SPIMF</h2>
+                <div id="adminMessages"></div>
             </div>
-        </div>
 
-        <!-- Dashboard Page -->
-        <div id="dashboardPage" class="page">
-            <div class="user-info">
-                <div class="avatar" id="userAvatar">U</div>
-                <div>
-                    <h3 id="dashboardUsername">User</h3>
-                    <div class="status-badge" id="userStatus">Active</div>
-                </div>
+            <!-- Account Status -->
+            <div class="dashboard-section">
+                <h2>Status Akaun Pengguna</h2>
+                <p>Status Akaun Anda: <span id="userStatus" class="status-active">Aktif</span></p>
             </div>
-            
-            <div class="dashboard">
-                <div class="sidebar">
-                    <ul class="sidebar-menu">
-                        <li><a href="#" class="sidebar-link active" data-content="notifications">Admin Notifications</a></li>
-                        <li><a href="#" class="sidebar-link" data-content="accountStatus">Account Status</a></li>
-                        <li><a href="#" class="sidebar-link" data-content="generateUserCodes">Generate User Codes</a></li>
-                        <li><a href="#" class="sidebar-link" data-content="generateIdCards">Generate ID Cards</a></li>
-                    </ul>
-                </div>
-                
-                <div class="content">
-                    <!-- Notifications Content -->
-                    <div id="notificationsContent" class="content-section">
-                        <h2 class="content-title">Admin Notifications</h2>
-                        <div id="adminMessages">
-                            <div class="card">
-                                <p>No messages from admin yet.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Account Status Content -->
-                    <div id="accountStatusContent" class="content-section" style="display: none;">
-                        <h2 class="content-title">Account Status</h2>
-                        <div class="card">
-                            <h3 class="card-title">Your Account Information</h3>
-                            <p><strong>Status:</strong> <span id="accountStatusText">Active</span></p>
-                            <p><strong>Last Updated:</strong> <span id="statusLastUpdated">Just now</span></p>
-                        </div>
-                    </div>
-                    
-                    <!-- Generate User Codes Content -->
-                    <div id="generateUserCodesContent" class="content-section" style="display: none;">
-                        <h2 class="content-title">Generate User Codes</h2>
-                        <div class="card">
-                            <h3 class="card-title">Create New User Codes</h3>
-                            <div class="generator-form">
-                                <div class="form-control">
-                                    <label class="form-label">Number of Codes</label>
-                                    <input type="number" class="form-input" id="userCodeCount" min="1" max="100" value="5">
-                                </div>
-                                <button class="btn btn-primary" id="generateUserCodesBtn">Generate Codes</button>
-                            </div>
-                            
-                            <div id="userCodesResult" class="codes-container"></div>
-                        </div>
-                        
-                        <div class="card">
-                            <h3 class="card-title">Recent User Codes</h3>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>BIL</th>
-                                        <th>Kode User</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userCodesTable">
-                                    <tr>
-                                        <td colspan="4" style="text-align: center;">No codes generated yet</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Generate ID Cards Content -->
-                    <div id="generateIdCardsContent" class="content-section" style="display: none;">
-                        <h2 class="content-title">Generate ID Card Registrations</h2>
-                        <div class="card">
-                            <h3 class="card-title">Create New ID Card Registrations</h3>
-                            <div class="generator-form">
-                                <div class="form-control">
-                                    <label class="form-label">Number of ID Cards</label>
-                                    <input type="number" class="form-input" id="idCardCount" min="1" max="100" value="5">
-                                </div>
-                                <button class="btn btn-primary" id="generateIdCardsBtn">Generate ID Cards</button>
-                            </div>
-                            
-                            <div id="idCardsResult" class="codes-container"></div>
-                        </div>
-                        
-                        <div class="card">
-                            <h3 class="card-title">Recent ID Card Registrations</h3>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>BIL</th>
-                                        <th>ID Card Registration</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="idCardsTable">
-                                    <tr>
-                                        <td colspan="4" style="text-align: center;">No ID cards generated yet</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Home Page -->
-        <div id="homePage" class="page active-page">
-            <div class="form-container">
-                <h2 class="form-title">Welcome to SPIMF System</h2>
-                <p style="text-align: center; margin-bottom: 20px;">Secure Platform for Identity Management and Functions</p>
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button class="btn btn-primary" id="homeLoginBtn">Login</button>
-                    <button class="btn btn-outline" id="homeSignupBtn">Sign Up</button>
+            <!-- User Code Generator (Admin Only) -->
+            <div class="dashboard-section" id="userCodeSection">
+                <h2>E-Jana Kode User Spimf</h2>
+                <div class="generator-form">
+                    <input type="number" id="userCodeCount" placeholder="Jumlah Kode yang Dijana" min="1" max="100">
+                    <button class="btn" id="generateUserCodes">Jana Kode User</button>
                 </div>
+                <div id="userCodesResult"></div>
+                <table id="userCodesTable">
+                    <thead>
+                        <tr>
+                            <th>BIL</th>
+                            <th>KODE USER</th>
+                            <th>TINDAKAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userCodesList"></tbody>
+                </table>
+            </div>
+
+            <!-- ID Card Generator (Admin Only) -->
+            <div class="dashboard-section" id="idCardSection">
+                <h2>E-Jana ID Card Registration</h2>
+                <div class="generator-form">
+                    <input type="number" id="idCardCount" placeholder="Jumlah ID Card yang Dijana" min="1" max="100">
+                    <button class="btn" id="generateIdCards">Jana ID Card</button>
+                </div>
+                <div id="idCardsResult"></div>
+                <table id="idCardsTable">
+                    <thead>
+                        <tr>
+                            <th>BIL</th>
+                            <th>ID CARD REGISTRATION</th>
+                            <th>TINDAKAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="idCardsList"></tbody>
+                </table>
+            </div>
+
+            <!-- Account Management -->
+            <div class="dashboard-section">
+                <h2>Pengurusan Akaun</h2>
+                <div class="form-group">
+                    <label for="editUsername">Username</label>
+                    <input type="text" id="editUsername" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Nombor Telefon</label>
+                    <input type="text" id="editPhone">
+                </div>
+                <div class="form-group">
+                    <label for="editQuestion">Soalan Keselamatan</label>
+                    <input type="text" id="editQuestion">
+                </div>
+                <div class="form-group">
+                    <label for="editAnswer">Jawapan Keselamatan</label>
+                    <input type="text" id="editAnswer">
+                </div>
+                <div class="form-group">
+                    <label for="editDob">Tarikh Lahir</label>
+                    <input type="date" id="editDob">
+                </div>
+                <button class="btn" id="updateAccount">Kemaskini Maklumat</button>
+                <button class="btn" id="deactivateAccount" style="background-color: #ff9800; margin-top: 10px;">Minta Tidak Aktif</button>
+                <button class="btn" id="deleteAccount" style="background-color: #f44336; margin-top: 10px;">Padam Akaun</button>
+            </div>
+
+            <!-- Support Info -->
+            <div class="dashboard-section">
+                <h2>Hubungi Sokongan</h2>
+                <p>Email: pfareezonzz01@gmail.com</p>
             </div>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>SPIMF System &copy; 2023 - All Rights Reserved</p>
-        </div>
-    </footer>
-
     <script>
-        // Ganti URL ini dengan URL Web App dari Google Apps Script
-        const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzf5eo-SKZp1klk6esZMedDa4873fe5ngwUKxicPUQW2MwrH-ZJFLul0QymFv-Nv6n-ig/exec';
+        // Google Apps Script URL - Ganti dengan URL Web App Anda
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxmiiHYsTANNsLupaZB16gDzUcyEaKvCXGipUJZ6ZNxaQE1rlLiBU8UuN0hRC5gZON6MA/exec';
         
         // DOM Elements
-        const loginPage = document.getElementById('loginPage');
-        const signupPage = document.getElementById('signupPage');
-        const forgotPasswordPage = document.getElementById('forgotPasswordPage');
-        const dashboardPage = document.getElementById('dashboardPage');
-        const homePage = document.getElementById('homePage');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const forgotForm = document.getElementById('forgot-form');
+        const dashboard = document.getElementById('dashboard');
         
-        const authButtons = document.getElementById('authButtons');
-        const userMenu = document.getElementById('userMenu');
-        const usernameDisplay = document.getElementById('usernameDisplay');
-        const userAvatar = document.getElementById('userAvatar');
-        const dashboardUsername = document.getElementById('dashboardUsername');
-        const userStatus = document.getElementById('userStatus');
+        const navLogin = document.getElementById('nav-login');
+        const navSignup = document.getElementById('nav-signup');
+        const navForgot = document.getElementById('nav-forgot');
         
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const showForgot = document.getElementById('showForgot');
+        const backToLogin = document.getElementById('backToLogin');
         
-        const loginAlert = document.getElementById('loginAlert');
-        const signupAlert = document.getElementById('signupAlert');
-        const forgotAlert = document.getElementById('forgotAlert');
-        
-        const generateUserCodesBtn = document.getElementById('generateUserCodesBtn');
-        const generateIdCardsBtn = document.getElementById('generateIdCardsBtn');
-        
+        // User session
         let currentUser = null;
+        let isAdmin = false;
         
         // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                showPage(this.getAttribute('data-page'));
-            });
-        });
+        navLogin.addEventListener('click', () => showSection('login'));
+        navSignup.addEventListener('click', () => showSection('signup'));
+        navForgot.addEventListener('click', () => showSection('forgot'));
+        showForgot.addEventListener('click', () => showSection('forgot'));
+        backToLogin.addEventListener('click', () => showSection('login'));
         
-        document.getElementById('loginBtn').addEventListener('click', () => showPage('login'));
-        document.getElementById('signupBtn').addEventListener('click', () => showPage('signup'));
-        document.getElementById('homeLoginBtn').addEventListener('click', () => showPage('login'));
-        document.getElementById('homeSignupBtn').addEventListener('click', () => showPage('signup'));
-        document.getElementById('forgotPasswordLink').addEventListener('click', () => showPage('forgotPassword'));
-        document.getElementById('backToLoginLink').addEventListener('click', () => showPage('login'));
-        document.getElementById('logoutBtn').addEventListener('click', logout);
-        
-        // Sidebar navigation
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Update active link
-                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Show corresponding content
-                const contentId = this.getAttribute('data-content') + 'Content';
-                document.querySelectorAll('.content-section').forEach(section => {
-                    section.style.display = 'none';
-                });
-                document.getElementById(contentId).style.display = 'block';
-            });
-        });
-        
-        // Form submissions
-        loginForm.addEventListener('submit', handleLogin);
-        signupForm.addEventListener('submit', handleSignup);
-        forgotPasswordForm.addEventListener('submit', handleForgotPassword);
-        
-        // Generator buttons
-        generateUserCodesBtn.addEventListener('click', generateUserCodes);
-        generateIdCardsBtn.addEventListener('click', generateIdCards);
-        
-        // Show page function
-        function showPage(page) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active-page');
-            });
+        function showSection(section) {
+            loginForm.classList.add('hidden');
+            signupForm.classList.add('hidden');
+            forgotForm.classList.add('hidden');
+            dashboard.classList.add('hidden');
             
-            // Show selected page
-            if (page === 'home') {
-                homePage.classList.add('active-page');
-            } else if (page === 'login') {
-                loginPage.classList.add('active-page');
-            } else if (page === 'signup') {
-                signupPage.classList.add('active-page');
-            } else if (page === 'forgotPassword') {
-                forgotPasswordPage.classList.add('active-page');
-            } else if (page === 'dashboard') {
-                dashboardPage.classList.add('active-page');
+            navLogin.classList.remove('active');
+            navSignup.classList.remove('active');
+            navForgot.classList.remove('active');
+            
+            if (section === 'login') {
+                loginForm.classList.remove('hidden');
+                navLogin.classList.add('active');
+            } else if (section === 'signup') {
+                signupForm.classList.remove('hidden');
+                navSignup.classList.add('active');
+            } else if (section === 'forgot') {
+                forgotForm.classList.remove('hidden');
+                navForgot.classList.add('active');
+            } else if (section === 'dashboard') {
+                dashboard.classList.remove('hidden');
+                loadDashboard();
             }
         }
         
-        // Handle login
-        async function handleLogin(e) {
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
             try {
-                const response = await fetch(APP_SCRIPT_URL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+                    body: JSON.stringify({
+                        action: 'login',
+                        username: username,
+                        password: password
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    currentUser = {
-                        username: result.username,
-                        status: result.status
-                    };
-                    
-                    // Update UI
-                    usernameDisplay.textContent = result.username;
-                    dashboardUsername.textContent = result.username;
-                    userAvatar.textContent = result.username.charAt(0).toUpperCase();
-                    userStatus.textContent = result.status;
-                    userStatus.className = 'status-badge status-' + result.status.toLowerCase();
-                    
-                    // Show user menu, hide auth buttons
-                    authButtons.style.display = 'none';
-                    userMenu.style.display = 'flex';
-                    
-                    // Show dashboard
-                    showPage('dashboard');
-                    
-                    // Load admin messages and account status
-                    loadAdminMessages();
-                    loadAccountStatus();
+                    currentUser = result.user;
+                    isAdmin = result.isAdmin || false;
+                    showSection('dashboard');
                 } else {
-                    showAlert(loginAlert, result.message, 'danger');
+                    alert(result.message || 'Login gagal. Sila periksa semula maklumat anda.');
                 }
             } catch (error) {
-                showAlert(loginAlert, 'Login failed: ' + error.message, 'danger');
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
             }
-        }
+        });
         
-        // Handle signup
-        async function handleSignup(e) {
+        // Signup Form Submission
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('signupUsername').value;
-            const password = document.getElementById('signupPassword').value;
-            const phone = document.getElementById('signupPhone').value;
-            const securityQuestion = document.getElementById('securityQuestion').value;
-            const securityAnswer = document.getElementById('securityAnswer').value;
-            const dob = document.getElementById('dob').value;
-            const pengesahan = document.getElementById('pengesahan').checked;
+            const userData = {
+                action: 'signup',
+                username: document.getElementById('signupUsername').value,
+                password: document.getElementById('signupPassword').value,
+                phone: document.getElementById('signupPhone').value,
+                question: document.getElementById('signupQuestion').value,
+                answer: document.getElementById('signupAnswer').value,
+                dob: document.getElementById('signupDob').value,
+                notification: document.getElementById('signupNotification').checked
+            };
             
             try {
-                const response = await fetch(APP_SCRIPT_URL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `action=signup&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&phone=${encodeURIComponent(phone)}&securityQuestion=${encodeURIComponent(securityQuestion)}&securityAnswer=${encodeURIComponent(securityAnswer)}&dob=${encodeURIComponent(dob)}&pengesahan=${pengesahan}`
+                    body: JSON.stringify(userData)
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    showAlert(signupAlert, result.message, 'success');
-                    // Clear form
-                    signupForm.reset();
-                    // Redirect to login after 2 seconds
-                    setTimeout(() => {
-                        showPage('login');
-                    }, 2000);
+                    alert('Pendaftaran berjaya! Sila log masuk.');
+                    showSection('login');
                 } else {
-                    showAlert(signupAlert, result.message, 'danger');
+                    alert(result.message || 'Pendaftaran gagal. Sila cuba lagi.');
                 }
             } catch (error) {
-                showAlert(signupAlert, 'Registration failed: ' + error.message, 'danger');
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
             }
-        }
+        });
         
-        // Handle forgot password
-        async function handleForgotPassword(e) {
+        // Forgot Password Form Submission
+        document.getElementById('forgotForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('forgotUsername').value;
-            const securityAnswer = document.getElementById('forgotSecurityAnswer').value;
+            const userData = {
+                action: 'forgotPassword',
+                username: document.getElementById('forgotUsername').value,
+                question: document.getElementById('forgotQuestion').value,
+                answer: document.getElementById('forgotAnswer').value
+            };
             
             try {
-                const response = await fetch(APP_SCRIPT_URL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `action=forgotPassword&username=${encodeURIComponent(username)}&securityAnswer=${encodeURIComponent(securityAnswer)}`
+                    body: JSON.stringify(userData)
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    showAlert(forgotAlert, 'Security question verified. You can now create a new account.', 'success');
-                    // Redirect to signup after 2 seconds
-                    setTimeout(() => {
-                        showPage('signup');
-                    }, 2000);
+                    alert('Pengesahan berjaya! Sila buat akaun baru.');
+                    showSection('signup');
                 } else {
-                    showAlert(forgotAlert, result.message, 'danger');
+                    alert(result.message || 'Pengesahan gagal. Sila periksa semula maklumat anda.');
                 }
             } catch (error) {
-                showAlert(forgotAlert, 'Verification failed: ' + error.message, 'danger');
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
             }
-        }
+        });
         
-        // Generate user codes
-        async function generateUserCodes() {
+        // Load Dashboard Data
+        async function loadDashboard() {
             if (!currentUser) return;
             
-            const count = document.getElementById('userCodeCount').value;
+            // Load user data for account management
+            document.getElementById('editUsername').value = currentUser.username || '';
+            document.getElementById('editPhone').value = currentUser.phone || '';
+            document.getElementById('editQuestion').value = currentUser.question || '';
+            document.getElementById('editAnswer').value = currentUser.answer || '';
+            document.getElementById('editDob').value = currentUser.dob || '';
             
+            // Load admin messages
             try {
-                const response = await fetch(APP_SCRIPT_URL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `action=generateUserCodes&username=${encodeURIComponent(currentUser.username)}&count=${count}`
+                    body: JSON.stringify({
+                        action: 'getAdminMessages',
+                        username: currentUser.username
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    const container = document.getElementById('userCodesResult');
-                    container.innerHTML = '';
+                    const messagesContainer = document.getElementById('adminMessages');
+                    messagesContainer.innerHTML = '';
                     
-                    result.codes.forEach(code => {
-                        const codeItem = document.createElement('div');
-                        codeItem.className = 'code-item';
-                        codeItem.innerHTML = `
-                            <span>${code}</span>
-                            <button class="btn btn-sm btn-outline copy-btn" data-code="${code}">Copy</button>
-                        `;
-                        container.appendChild(codeItem);
-                    });
-                    
-                    // Add copy functionality
-                    document.querySelectorAll('.copy-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
-                            const code = this.getAttribute('data-code');
-                            navigator.clipboard.writeText(code).then(() => {
-                                this.textContent = 'Copied!';
-                                setTimeout(() => {
-                                    this.textContent = 'Copy';
-                                }, 2000);
-                            });
+                    if (result.messages && result.messages.length > 0) {
+                        result.messages.forEach(msg => {
+                            const notification = document.createElement('div');
+                            notification.className = 'notification';
+                            notification.innerHTML = `
+                                <p>${msg.message}</p>
+                                <div class="notification-time">${msg.timestamp}</div>
+                            `;
+                            messagesContainer.appendChild(notification);
                         });
-                    });
-                    
-                    // Update table
-                    updateUserCodesTable(result.codes);
-                } else {
-                    alert('Failed to generate codes: ' + result.message);
-                }
-            } catch (error) {
-                alert('Error generating codes: ' + error.message);
-            }
-        }
-        
-        // Generate ID cards
-        async function generateIdCards() {
-            if (!currentUser) return;
-            
-            const count = document.getElementById('idCardCount').value;
-            
-            try {
-                const response = await fetch(APP_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=generateIdCards&username=${encodeURIComponent(currentUser.username)}&count=${count}`
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    const container = document.getElementById('idCardsResult');
-                    container.innerHTML = '';
-                    
-                    result.idCards.forEach(idCard => {
-                        const codeItem = document.createElement('div');
-                        codeItem.className = 'code-item';
-                        codeItem.innerHTML = `
-                            <span>${idCard}</span>
-                            <button class="btn btn-sm btn-outline copy-btn" data-code="${idCard}">Copy</button>
-                        `;
-                        container.appendChild(codeItem);
-                    });
-                    
-                    // Add copy functionality
-                    document.querySelectorAll('.copy-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
-                            const code = this.getAttribute('data-code');
-                            navigator.clipboard.writeText(code).then(() => {
-                                this.textContent = 'Copied!';
-                                setTimeout(() => {
-                                    this.textContent = 'Copy';
-                                }, 2000);
-                            });
-                        });
-                    });
-                    
-                    // Update table
-                    updateIdCardsTable(result.idCards);
-                } else {
-                    alert('Failed to generate ID cards: ' + result.message);
-                }
-            } catch (error) {
-                alert('Error generating ID cards: ' + error.message);
-            }
-        }
-        
-        // Load admin messages
-        async function loadAdminMessages() {
-            if (!currentUser) return;
-            
-            try {
-                const response = await fetch(APP_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=getAdminMessages&username=${encodeURIComponent(currentUser.username)}`
-                });
-                
-                const result = await response.json();
-                
-                if (result.success && result.messages.length > 0) {
-                    const container = document.getElementById('adminMessages');
-                    container.innerHTML = '';
-                    
-                    result.messages.forEach(msg => {
-                        const messageCard = document.createElement('div');
-                        messageCard.className = 'card';
-                        messageCard.innerHTML = `
-                            <h3 class="card-title">From Admin</h3>
-                            <p>${msg[1]}</p>
-                            <p><small>${new Date(msg[2]).toLocaleString()}</small></p>
-                        `;
-                        container.appendChild(messageCard);
-                    });
+                    } else {
+                        messagesContainer.innerHTML = '<p>Tiada pemberitahuan dari admin.</p>';
+                    }
                 }
             } catch (error) {
                 console.error('Error loading admin messages:', error);
             }
+            
+            // Load user status
+            document.getElementById('userStatus').textContent = currentUser.status || 'Aktif';
+            document.getElementById('userStatus').className = `status-${(currentUser.status || 'active').toLowerCase()}`;
+            
+            // Show/hide admin sections
+            document.getElementById('userCodeSection').style.display = isAdmin ? 'block' : 'none';
+            document.getElementById('idCardSection').style.display = isAdmin ? 'block' : 'none';
+            
+            // Load user codes and ID cards if admin
+            if (isAdmin) {
+                loadUserCodes();
+                loadIdCards();
+            }
         }
         
-        // Load account status
-        async function loadAccountStatus() {
-            if (!currentUser) return;
+        // Generate User Codes
+        document.getElementById('generateUserCodes').addEventListener('click', async function() {
+            const count = document.getElementById('userCodeCount').value;
+            
+            if (!count || count < 1) {
+                alert('Sila masukkan jumlah kode yang sah.');
+                return;
+            }
             
             try {
-                const response = await fetch(APP_SCRIPT_URL, {
+                const response = await fetch(scriptURL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
                     },
-                    body: `action=getAccountStatus&username=${encodeURIComponent(currentUser.username)}`
+                    body: JSON.stringify({
+                        action: 'generateUserCodes',
+                        count: parseInt(count),
+                        username: currentUser.username
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    document.getElementById('accountStatusText').textContent = result.status;
-                    document.getElementById('statusLastUpdated').textContent = new Date().toLocaleString();
+                    document.getElementById('userCodesResult').innerHTML = `<p>${result.message}</p>`;
+                    loadUserCodes();
+                } else {
+                    alert(result.message || 'Penjanaan kode gagal.');
                 }
             } catch (error) {
-                console.error('Error loading account status:', error);
-            }
-        }
-        
-        // Update user codes table
-        function updateUserCodesTable(codes) {
-            const tableBody = document.getElementById('userCodesTable');
-            tableBody.innerHTML = '';
-            
-            codes.forEach((code, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${code}</td>
-                    <td><span class="status-badge status-active">Available</span></td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-outline copy-btn" data-code="${code}">Copy</button>
-                        <button class="btn btn-sm btn-warning">Regenerate</button>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Add copy functionality to table buttons
-            document.querySelectorAll('#userCodesTable .copy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const code = this.getAttribute('data-code');
-                    navigator.clipboard.writeText(code).then(() => {
-                        this.textContent = 'Copied!';
-                        setTimeout(() => {
-                            this.textContent = 'Copy';
-                        }, 2000);
-                    });
-                });
-            });
-        }
-        
-        // Update ID cards table
-        function updateIdCardsTable(idCards) {
-            const tableBody = document.getElementById('idCardsTable');
-            tableBody.innerHTML = '';
-            
-            idCards.forEach((idCard, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${idCard}</td>
-                    <td><span class="status-badge status-active">Available</span></td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-outline copy-btn" data-code="${idCard}">Copy</button>
-                        <button class="btn btn-sm btn-warning">Regenerate</button>
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Add copy functionality to table buttons
-            document.querySelectorAll('#idCardsTable .copy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const code = this.getAttribute('data-code');
-                    navigator.clipboard.writeText(code).then(() => {
-                        this.textContent = 'Copied!';
-                        setTimeout(() => {
-                            this.textContent = 'Copy';
-                        }, 2000);
-                    });
-                });
-            });
-        }
-        
-        // Logout
-        function logout() {
-            currentUser = null;
-            authButtons.style.display = 'flex';
-            userMenu.style.display = 'none';
-            showPage('home');
-            
-            // Clear forms
-            loginForm.reset();
-            signupForm.reset();
-            forgotPasswordForm.reset();
-        }
-        
-        // Show alert
-        function showAlert(alertElement, message, type) {
-            alertElement.textContent = message;
-            alertElement.className = `alert alert-${type}`;
-            alertElement.style.display = 'block';
-            
-            // Hide alert after 5 seconds
-            setTimeout(() => {
-                alertElement.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is already logged in (from localStorage)
-            const savedUser = localStorage.getItem('spimfUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                usernameDisplay.textContent = currentUser.username;
-                dashboardUsername.textContent = currentUser.username;
-                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
-                userStatus.textContent = currentUser.status;
-                userStatus.className = 'status-badge status-' + currentUser.status.toLowerCase();
-                
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                showPage('dashboard');
-                
-                loadAdminMessages();
-                loadAccountStatus();
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
             }
         });
+        
+        // Generate ID Cards
+        document.getElementById('generateIdCards').addEventListener('click', async function() {
+            const count = document.getElementById('idCardCount').value;
+            
+            if (!count || count < 1) {
+                alert('Sila masukkan jumlah ID card yang sah.');
+                return;
+            }
+            
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'generateIdCards',
+                        count: parseInt(count),
+                        username: currentUser.username
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('idCardsResult').innerHTML = `<p>${result.message}</p>`;
+                    loadIdCards();
+                } else {
+                    alert(result.message || 'Penjanaan ID card gagal.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
+            }
+        });
+        
+        // Load User Codes
+        async function loadUserCodes() {
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'getUserCodes'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const codesList = document.getElementById('userCodesList');
+                    codesList.innerHTML = '';
+                    
+                    if (result.codes && result.codes.length > 0) {
+                        result.codes.forEach((code, index) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>${code.code}</td>
+                                <td>
+                                    <button class="action-btn" onclick="copyUserCode('${code.code}')">🆒</button>
+                                    <button class="action-btn" onclick="regenerateUserCode('${code.id}')">🔄</button>
+                                    <button class="action-btn" onclick="deleteUserCode('${code.id}')">❎</button>
+                                </td>
+                            `;
+                            codesList.appendChild(row);
+                        });
+                        
+                        // Add copy all button
+                        const copyAllBtn = document.createElement('button');
+                        copyAllBtn.className = 'btn';
+                        copyAllBtn.textContent = '🆙 Copy All Kode';
+                        copyAllBtn.onclick = copyAllUserCodes;
+                        document.getElementById('userCodesResult').appendChild(copyAllBtn);
+                    } else {
+                        codesList.innerHTML = '<tr><td colspan="3">Tiada kode user dijumpai.</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user codes:', error);
+            }
+        }
+        
+        // Load ID Cards
+        async function loadIdCards() {
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'getIdCards'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const cardsList = document.getElementById('idCardsList');
+                    cardsList.innerHTML = '';
+                    
+                    if (result.cards && result.cards.length > 0) {
+                        result.cards.forEach((card, index) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>${card.idCard}</td>
+                                <td>
+                                    <button class="action-btn" onclick="copyIdCard('${card.idCard}')">🆒</button>
+                                    <button class="action-btn" onclick="regenerateIdCard('${card.id}')">🔄</button>
+                                    <button class="action-btn" onclick="deleteIdCard('${card.id}')">❎</button>
+                                </td>
+                            `;
+                            cardsList.appendChild(row);
+                        });
+                        
+                        // Add copy all button
+                        const copyAllBtn = document.createElement('button');
+                        copyAllBtn.className = 'btn';
+                        copyAllBtn.textContent = '🆙 Copy All ID Cards';
+                        copyAllBtn.onclick = copyAllIdCards;
+                        document.getElementById('idCardsResult').appendChild(copyAllBtn);
+                    } else {
+                        cardsList.innerHTML = '<tr><td colspan="3">Tiada ID card dijumpai.</td></tr>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading ID cards:', error);
+            }
+        }
+        
+        // Copy functions
+        function copyUserCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Kode disalin: ' + code);
+            });
+        }
+        
+        function copyAllUserCodes() {
+            const codes = Array.from(document.querySelectorAll('#userCodesList td:nth-child(2)'))
+                .map(td => td.textContent)
+                .join('\n');
+            
+            navigator.clipboard.writeText(codes).then(() => {
+                alert('Semua kode disalin!');
+            });
+        }
+        
+        function copyIdCard(idCard) {
+            navigator.clipboard.writeText(idCard).then(() => {
+                alert('ID Card disalin: ' + idCard);
+            });
+        }
+        
+        function copyAllIdCards() {
+            const cards = Array.from(document.querySelectorAll('#idCardsList td:nth-child(2)'))
+                .map(td => td.textContent)
+                .join('\n');
+            
+            navigator.clipboard.writeText(cards).then(() => {
+                alert('Semua ID Card disalin!');
+            });
+        }
+        
+        // Account Management
+        document.getElementById('updateAccount').addEventListener('click', async function() {
+            const userData = {
+                action: 'updateAccount',
+                username: currentUser.username,
+                phone: document.getElementById('editPhone').value,
+                question: document.getElementById('editQuestion').value,
+                answer: document.getElementById('editAnswer').value,
+                dob: document.getElementById('editDob').value
+            };
+            
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Maklumat akaun berjaya dikemaskini.');
+                    currentUser = { ...currentUser, ...userData };
+                } else {
+                    alert(result.message || 'Kemaskini gagal. Sila cuba lagi.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Ralat sistem. Sila cuba lagi.');
+            }
+        });
+        
+        document.getElementById('deactivateAccount').addEventListener('click', async function() {
+            if (confirm('Adakah anda pasti ingin meminta untuk tidak aktifkan akaun?')) {
+                try {
+                    const response = await fetch(scriptURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'deactivateAccount',
+                            username: currentUser.username
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        alert('Permintaan tidak aktif telah dihantar.');
+                        currentUser.status = 'Tidak Aktif';
+                        document.getElementById('userStatus').textContent = 'Tidak Aktif';
+                        document.getElementById('userStatus').className = 'status-inactive';
+                    } else {
+                        alert(result.message || 'Permintaan gagal. Sila cuba lagi.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Ralat sistem. Sila cuba lagi.');
+                }
+            }
+        });
+        
+        document.getElementById('deleteAccount').addEventListener('click', async function() {
+            if (confirm('Adakah anda pasti ingin memadam akaun? Tindakan ini tidak boleh dipulihkan.')) {
+                try {
+                    const response = await fetch(scriptURL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'deleteAccount',
+                            username: currentUser.username
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        alert('Akaun berjaya dipadam.');
+                        currentUser = null;
+                        showSection('login');
+                    } else {
+                        alert(result.message || 'Pemadaman gagal. Sila cuba lagi.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Ralat sistem. Sila cuba lagi.');
+                }
+            }
+        });
+        
+        // Initialize
+        showSection('login');
     </script>
 </body>
 </html>
